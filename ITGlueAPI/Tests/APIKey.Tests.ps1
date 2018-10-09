@@ -18,7 +18,7 @@ Describe "Tests" {
         }
         It "Remove-ITGlueAPIKey should remove the ITGlue_API_Key variable" {
             Remove-ITGlueAPIKey
-            Get-ITGlueAPIKey | Should -BeNullOrEmpty
+            $ITGlue_API_Key | Should -BeNullOrEmpty
         }
     }
 }
