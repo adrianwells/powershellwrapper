@@ -17,6 +17,14 @@ $ManifestFile = "$ThisModulePath\$ThisModuleName.psd1"
 # Import the module and store the information about the module
 $ModuleInformation = Import-module -Name $ManifestFile -PassThru
 
+# Obtain list of functions provided by ITGlueAPI
+$ExportedFunctions = $ModuleInformation.ExportedFunctions.Values.name
+
+# Obtain list of fucntions by searching through the Internal and Resource Directories looking for "function" keyword and trimming the results
+### TODO to look for a line that starts with "function"
+$ManualFunctions = ( Get-ChildItem -Path "..\Resources" -Filter "*.ps1" -Recurse | Select-String -Pattern "function" ) | ForEach-Object { ($_.Line.Substring(9)).Trim(@("{"," ")) }
+$ManualFunctions += ( Get-ChildItem -Path "..\Internal" -Filter "*.ps1" -Recurse | Select-String -Pattern "function" ) | ForEach-Object { ($_.Line.Substring(9)).Trim(@("{"," ")) }
+
 # Internal Files
 $InternalDirectoryFiles = (
     'APIKey.ps1',
@@ -87,6 +95,16 @@ Describe "Module Tests" {
 
         It "$ThisModuleName\Resources directory has functions" {
             "$ThisModulePath\Resources\*.ps1" | Should Exist
+        }
+
+        It "Has correct number of Exported Functions compared to a Manual count of .ps1 files in Internal and Resources" {
+            $ExportedFunctions.count | Should -Be $ManualFunctions.count
+        }
+
+        ForEach ($ManualFunction in $ManualFunctions) {
+            It "ExportedFunctions Should contain $ManualFunction" {
+                $ManualFunction | Should -BeIn $ExportedFunctions
+            }
         }
 
         # TODO - Only checking one file currently
