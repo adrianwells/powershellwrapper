@@ -1,4 +1,4 @@
-#Requires -Modules Pester
+#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="4.0" }
 
 # Obtain name of this module by parsing name of test file (ITGlueAPI\Tests\ITGlueAPI.Tests.ps1)
 $ThisModule = $PSCommandPath -replace '\.Tests\.ps1$'
