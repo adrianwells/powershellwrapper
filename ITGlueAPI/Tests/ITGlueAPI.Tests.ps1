@@ -8,7 +8,7 @@ $ThisModuleName = $ThisModule | Split-Path -Leaf
 $ThisModulePath = Split-Path (Split-Path -Parent $PSCommandPath) -Parent
 
 # Make sure one or multiple versions of the module are not loaded
-Get-Module -Name $ThisModuleName | Remove-Module
+Get-Module -Name $ThisModuleName | Remove-Module -Force
 
 # Credit - borrowed with care from http://www.lazywinadmin.com/2016/05/using-pester-to-test-your-manifest-file.html and modified as needed
 # Manifest file path
@@ -20,10 +20,9 @@ $ModuleInformation = Import-module -Name $ManifestFile -PassThru
 # Obtain list of functions provided by ITGlueAPI
 $ExportedFunctions = $ModuleInformation.ExportedFunctions.Values.name
 
-# Obtain list of fucntions by searching through the Internal and Resource Directories looking for "function" keyword and trimming the results
-### TODO to look for a line that starts with "function"
-$ManualFunctions = ( Get-ChildItem -Path "..\Resources" -Filter "*.ps1" -Recurse | Select-String -Pattern "function" ) | ForEach-Object { ($_.Line.Substring(9)).Trim(@("{"," ")) }
-$ManualFunctions += ( Get-ChildItem -Path "..\Internal" -Filter "*.ps1" -Recurse | Select-String -Pattern "function" ) | ForEach-Object { ($_.Line.Substring(9)).Trim(@("{"," ")) }
+# Obtain list of fucntions by searching through the Internal and Resource Directories looking for strings starting with "function" keyword and trimming the results
+$ManualFunctions = ( Get-ChildItem -Path "..\Resources" -Filter "*.ps1" -Recurse | Select-String -Pattern "function" ) | ForEach-Object { if ($_.Line.StartsWith("function")) {($_.Line.Substring(9)).Trim(@("{"," ")) } }
+$ManualFunctions += ( Get-ChildItem -Path "..\Internal" -Filter "*.ps1" -Recurse | Select-String -Pattern "function" ) | ForEach-Object { if ($_.Line.StartsWith("function")) {($_.Line.Substring(9)).Trim(@("{"," ")) } }
 
 # Internal Files
 $InternalDirectoryFiles = (
