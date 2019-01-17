@@ -11,6 +11,9 @@ Import-Module ..\ITGlueAPI.psd1
 Get-Module ITGlueAPI
 
 # Run tests
+.\ModuleSettings.Tests.ps1
+.\ITGlueAPI.Tests.ps1
+
 # Remove API Key before running the APIKey test
 if ($ITGlue_API_Key) {
     Remove-ITGlueAPIKey
@@ -19,5 +22,3 @@ if ($ITGlue_API_Key) {
 
 # Run more tests
 .\BaseURI.Tests.ps1
-.\ITGlueAPI.Tests.ps1
-.\ModuleSettings.Tests.ps1
