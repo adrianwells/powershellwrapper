@@ -6,7 +6,7 @@ $ThisFileName = $ThisFile | Split-Path -Leaf
 
 Describe "Tests" {
     Context "Test $ThisFileName Functions" {
-        It "ITGlue_API_Key should intially be empty or null" {
+        It "ITGlue_API_Key should initially be empty or null" {
             $ITGlue_API_Key | Should -BeNullOrEmpty
         }
         It "Add-ITGlueAPIKey called with parameter ITGlue_API_Key should not be empty" {
