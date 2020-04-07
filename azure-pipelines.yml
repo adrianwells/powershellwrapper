@@ -15,7 +15,7 @@ steps:
   inputs:
     includeRootFolder: false
     archiveType: zip
-    enabled: false
+  enabled: false
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: \'
