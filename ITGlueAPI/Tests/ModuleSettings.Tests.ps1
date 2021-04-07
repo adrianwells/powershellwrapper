@@ -1,4 +1,4 @@
-#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="4.0" }
+#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.0" }
 
 # Obtain name of this file
 $ThisFile = $PSCommandPath -replace '\.Tests\.ps1$'
